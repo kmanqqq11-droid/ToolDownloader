@@ -8,6 +8,9 @@ const { URL } = require('url');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy required for Render and express-rate-limit
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -56,7 +59,12 @@ app.post('/api/info', (req, res) => {
   }
 
   // Use spawn with argument array to prevent command injection
-  const ytdlp = spawn('yt-dlp', ['-J', url]);
+  // Use extractor-args to bypass YouTube bot protection
+  const ytdlp = spawn('yt-dlp', [
+    '-J', 
+    '--extractor-args', 'youtube:player_client=android',
+    url
+  ]);
   
   ytdlp.on('error', (err) => {
     console.error('Failed to start yt-dlp:', err);
@@ -143,7 +151,13 @@ app.get('/api/download', (req, res) => {
   // -f format
   // -o - streams to stdout
   // --no-part prevents creation of .part files
-  const ytdlp = spawn('yt-dlp', ['-f', format, '-o', '-', '--no-part', url]);
+  const ytdlp = spawn('yt-dlp', [
+    '-f', format, 
+    '-o', '-', 
+    '--no-part', 
+    '--extractor-args', 'youtube:player_client=android',
+    url
+  ]);
 
   ytdlp.on('error', (err) => {
     console.error('Failed to start yt-dlp:', err);

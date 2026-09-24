@@ -1,4 +1,4 @@
-FROM node:18-bullseye-slim
+FROM node:20-bookworm-slim
 
 # Install Python, pip, and ffmpeg (ffmpeg is required by yt-dlp to merge high-quality video & audio)
 RUN apt-get update && apt-get install -y \
@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install yt-dlp via pip (this ensures it's the Linux version and always up to date)
-RUN pip3 install --no-cache-dir yt-dlp
+RUN pip3 install --no-cache-dir yt-dlp --break-system-packages
 
 # Set working directory
 WORKDIR /app

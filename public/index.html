@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader Pro</title>
+    <meta name="description" content="Securely download videos from multiple platforms">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="glass-panel">
+        <header>
+            <h1>Video Downloader <span class="accent">Pro</span></h1>
+            <p>Download from YouTube, TikTok, Vimeo & more.</p>
+        </header>
+
+        <form id="download-form">
+            <div class="input-group">
+                <input type="url" id="url-input" placeholder="Paste your video URL here..." required>
+                <button type="submit" id="fetch-btn">Fetch formats</button>
+            </div>
+            <div class="error-msg" id="error-msg"></div>
+        </form>
+
+        <div id="loader" class="loader hidden">
+            <div class="spinner"></div>
+            <p>Fetching video info...</p>
+        </div>
+
+        <div id="video-info" class="video-info hidden">
+            <div class="thumbnail-container">
+                <img id="video-thumbnail" src="" alt="Video Thumbnail">
+                <div class="duration-badge" id="video-duration"></div>
+            </div>
+            <h2 id="video-title"></h2>
+            
+            <div class="format-selection">
+                <label for="format-select">Select Quality:</label>
+                <select id="format-select">
+                    <!-- Options injected here -->
+                </select>
+            </div>
+
+            <button id="download-btn" class="download-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download Video
+            </button>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registered', reg))
+                    .catch(err => console.log('Service Worker not registered', err));
+            });
+        }
+    </script>
+</body>
+</html>
